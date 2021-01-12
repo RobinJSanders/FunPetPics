@@ -19,7 +19,7 @@ namespace FunPetPics.Models
         [DataType(DataType.Password)]
         public string DisplayName { get; set; }
 
-        public virtual List<PetPhotoModel> Uploads { get; set; }
-        public virtual List<PetPhotoModel> Ratings { get; set; }
+        public virtual ICollection<PetPhotoModel> Uploads { get; set; }
+        public virtual ICollection<RatingModel> Ratings { get; set; }
     }
 }

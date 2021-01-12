@@ -13,6 +13,12 @@ namespace FunPetPics.Data
         {
 
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+        }
+
         public DbSet<PetPhotoModel> PetPhotos { get; set; }
         public DbSet<UserModel> Users { get; set; }
         public DbSet<RatingModel> Ratings { get; set; }
