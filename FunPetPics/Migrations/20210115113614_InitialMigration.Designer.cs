@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FunPetPics.Migrations
 {
     [DbContext(typeof(FunPetPicsContext))]
-    [Migration("20210112123130_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20210115113614_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,81 +23,89 @@ namespace FunPetPics.Migrations
 
             modelBuilder.Entity("FunPetPics.Models.PetPhotoModel", b =>
                 {
-                    b.Property<int>("PetID")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<double?>("AverageAwsomnessRating")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("AverageCutenessRating")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("AverageFunnynessRating")
+                        .HasColumnType("float");
+
                     b.Property<string>("PetName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoPath")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserID")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserModelUserId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("PetID");
-
-                    b.HasIndex("UserModelUserId");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("PetPhotos");
                 });
 
             modelBuilder.Entity("FunPetPics.Models.RatingModel", b =>
                 {
-                    b.Property<int>("RaitngId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int>("AwsomenessRating")
+                    b.Property<int?>("AwsomenessRating")
                         .HasColumnType("int");
 
-                    b.Property<int>("CutenessRating")
+                    b.Property<int?>("CutenessRating")
                         .HasColumnType("int");
 
-                    b.Property<int>("FunynessRating")
+                    b.Property<int?>("FunynessRating")
                         .HasColumnType("int");
 
-                    b.Property<int>("PetID")
+                    b.Property<int?>("PetPhotoModelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PetPhotoModelPetID")
+                    b.Property<int?>("UserModelId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.Property<int?>("UserModelUserId")
-                        .HasColumnType("int");
+                    b.HasIndex("PetPhotoModelId");
 
-                    b.HasKey("RaitngId");
-
-                    b.HasIndex("PetPhotoModelPetID");
-
-                    b.HasIndex("UserModelUserId");
+                    b.HasIndex("UserModelId");
 
                     b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("FunPetPics.Models.UserModel", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
                     b.Property<string>("DisplayName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("UserId");
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -106,18 +114,18 @@ namespace FunPetPics.Migrations
                 {
                     b.HasOne("FunPetPics.Models.UserModel", null)
                         .WithMany("Uploads")
-                        .HasForeignKey("UserModelUserId");
+                        .HasForeignKey("UserModelId");
                 });
 
             modelBuilder.Entity("FunPetPics.Models.RatingModel", b =>
                 {
                     b.HasOne("FunPetPics.Models.PetPhotoModel", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("PetPhotoModelPetID");
+                        .HasForeignKey("PetPhotoModelId");
 
                     b.HasOne("FunPetPics.Models.UserModel", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("UserModelUserId");
+                        .HasForeignKey("UserModelId");
                 });
 
             modelBuilder.Entity("FunPetPics.Models.PetPhotoModel", b =>
