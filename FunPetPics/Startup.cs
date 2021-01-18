@@ -31,17 +31,8 @@ namespace FunPetPics
             services.AddDbContext<FunPetPicsContext>(options =>
         options.UseSqlServer(Configuration.GetConnectionString("FunPetPicsContext")));
 
-            services.AddAuthentication(options =>
-            {
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options => { options.LoginPath = "/Login"; });
-            services.AddMvc().AddRazorPagesOptions(options =>
-            {
-                options.Conventions.AuthorizeFolder("/");
-                options.Conventions.AllowAnonymousToPage("/Login");
-            });
+            services.AddMvc();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,18 +48,22 @@ namespace FunPetPics
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSession();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Account}/{action=Index}/{id?}");
             });
         }
     }
