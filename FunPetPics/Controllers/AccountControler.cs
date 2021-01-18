@@ -9,20 +9,19 @@ using FunPetPics.Models;
 
 namespace FunPetPics.Controllers
 {
-    public class AccountControler
-    {
-        [Route("account")]
+    
+        [Route("Account")]
         public class AccountController : Controller
         {
-            [Route("")]
-            [Route("index")]
-            [Route("~/")]
-            public IActionResult Index()
+        //[Route("")]
+        [Route("Index")]
+        //[Route("~/")]
+        public IActionResult Index()
             {
                 return View();
             }
 
-            [Route("login")]
+            [Route("Login")]
             [HttpPost]
             public IActionResult Login(string email, string password)
             {
@@ -46,7 +45,7 @@ namespace FunPetPics.Controllers
                 }
             }
 
-            [Route("logout")]
+            [Route("Logout")]
             [HttpGet]
             public IActionResult Logout()
             {
@@ -59,7 +58,7 @@ namespace FunPetPics.Controllers
                 return View();
             }
 
-            [Route("confirmCreateAccount")]
+            [Route("ConfirmCreateAccount")]
             [HttpPost]
             public IActionResult ConfirmCreateAccount(string email, string displayName, string password, string repeatPassword)
             {
@@ -98,6 +97,6 @@ namespace FunPetPics.Controllers
               
             }
 
-        }
+        
     }
 }
