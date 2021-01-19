@@ -1,5 +1,3 @@
-using System;
-
 namespace FunPetPics.Models
 {
     public class ErrorViewModel

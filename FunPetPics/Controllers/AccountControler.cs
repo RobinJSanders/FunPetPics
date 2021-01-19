@@ -13,9 +13,8 @@ namespace FunPetPics.Controllers
         [Route("Account")]
         public class AccountController : Controller
         {
-        //[Route("")]
+
         [Route("Index")]
-        //[Route("~/")]
         public IActionResult Index()
             {
                 return View();

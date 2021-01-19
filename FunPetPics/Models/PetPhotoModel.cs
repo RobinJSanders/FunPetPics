@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FunPetPics.Models
 {
@@ -24,32 +19,32 @@ namespace FunPetPics.Models
         public string PhotoPath { get; set; }
 
         public double? AverageCutenessRating
-        
-             { get; set; }
-            //get
-            //{
-            //    return Ratings.Select(r => (int?)r.CutenessRating).Average();
-            //}
 
-        
+        { get; set; }
+
+        //get
+        //{
+        //    return Ratings.Select(r => (int?)r.CutenessRating).Average();
+        //}
+
         public double? AverageFunnynessRating
-        
-             { get; set; }
-            //get
-            //{
-            //    return Ratings.Select(r => (int?)r.FunynessRating).Average();
-            //}
-        
+
+        { get; set; }
+
+        //get
+        //{
+        //    return Ratings.Select(r => (int?)r.FunynessRating).Average();
+        //}
+
         public double? AverageAwsomnessRating
-        
-             { get; set; }
-            //get
-            //{
-            //      return Ratings.Select(r => (int?)r.AwsomenessRating).Average();
-            //}
-        
+
+        { get; set; }
+
+        //get
+        //{
+        //      return Ratings.Select(r => (int?)r.AwsomenessRating).Average();
+        //}
+
         public virtual ICollection<RatingModel> Ratings { get; set; }
-
-
     }
 }
