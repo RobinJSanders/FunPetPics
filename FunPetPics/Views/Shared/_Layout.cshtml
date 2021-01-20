@@ -34,9 +34,9 @@
                             </li>
                         }
                         else
-                        {                    
+                        {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Success">Hello @Context.Session.GetString("username")</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ManageAccount">@Context.Session.GetString("username")</a>
                             </li>
                         }
                     </ul>
