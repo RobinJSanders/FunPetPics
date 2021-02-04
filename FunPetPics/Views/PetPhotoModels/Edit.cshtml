@@ -1,0 +1,69 @@
+﻿@model FunPetPics.Models.PetPhotoModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>PetPhotoModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="PetName" class="control-label"></label>
+                <input asp-for="PetName" class="form-control" />
+                <span asp-validation-for="PetName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageName" class="control-label"></label>
+                <input asp-for="ImageName" class="form-control" />
+                <span asp-validation-for="ImageName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateUploaded" class="control-label"></label>
+                <input asp-for="DateUploaded" class="form-control" />
+                <span asp-validation-for="DateUploaded" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AverageCutenessRating" class="control-label"></label>
+                <input asp-for="AverageCutenessRating" class="form-control" />
+                <span asp-validation-for="AverageCutenessRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AverageFunnynessRating" class="control-label"></label>
+                <input asp-for="AverageFunnynessRating" class="form-control" />
+                <span asp-validation-for="AverageFunnynessRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AverageAwsomnessRating" class="control-label"></label>
+                <input asp-for="AverageAwsomnessRating" class="form-control" />
+                <span asp-validation-for="AverageAwsomnessRating" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

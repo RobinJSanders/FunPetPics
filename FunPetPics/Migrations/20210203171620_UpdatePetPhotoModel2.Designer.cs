@@ -4,14 +4,16 @@ using FunPetPics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FunPetPics.Migrations
 {
     [DbContext(typeof(FunPetPicsContext))]
-    partial class FunPetPicsContextModelSnapshot : ModelSnapshot
+    [Migration("20210203171620_UpdatePetPhotoModel2")]
+    partial class UpdatePetPhotoModel2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

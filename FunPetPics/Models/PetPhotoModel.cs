@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace FunPetPics.Models
 {
@@ -7,43 +11,30 @@ namespace FunPetPics.Models
     {
         public int Id { get; set; }
 
-        //[Required]
-        //public int UserId { get; set; }
-
         [Required]
         public string PetName { get; set; }
 
-        //todo: enable users to upload actual photos but for now we just use string for the file path
-
         [Required]
-        public string PhotoPath { get; set; }
+        public string Title { get; set; }
 
-        public double? AverageCutenessRating
+        public string Description { get; set; }
 
+        [Column(TypeName = "nvarchar(100)")]
+        [DisplayName("Image Name")]
+        public string ImageName { get; set; }
+
+        [NotMapped]
+        [DisplayName("Upload File")]
+        public IFormFile ImageFile { get; set; }
+
+        public DateTime DateUploaded
         { get; set; }
 
-        //get
-        //{
-        //    return Ratings.Select(r => (int?)r.CutenessRating).Average();
-        //}
+        public double AverageCutenessRating { get; set; }
 
-        public double? AverageFunnynessRating
+        public double AverageFunnynessRating { get; set; }
 
-        { get; set; }
-
-        //get
-        //{
-        //    return Ratings.Select(r => (int?)r.FunynessRating).Average();
-        //}
-
-        public double? AverageAwsomnessRating
-
-        { get; set; }
-
-        //get
-        //{
-        //      return Ratings.Select(r => (int?)r.AwsomenessRating).Average();
-        //}
+        public double AverageAwsomnessRating { get; set; }
 
         public virtual ICollection<RatingModel> Ratings { get; set; }
     }

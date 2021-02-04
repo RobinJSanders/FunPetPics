@@ -1,5 +1,7 @@
 ﻿using FunPetPics.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FunPetPics.Data
 {

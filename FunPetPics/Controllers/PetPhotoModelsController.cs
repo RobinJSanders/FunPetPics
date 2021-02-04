@@ -1,28 +1,31 @@
-﻿using FunPetPics.Data;
-using FunPetPics.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using FunPetPics.Data;
+using FunPetPics.Models;
 
 namespace FunPetPics.Controllers
 {
-    public class UserModelsController : Controller
+    public class PetPhotoModelsController : Controller
     {
         private readonly FunPetPicsContext _context;
 
-        public UserModelsController(FunPetPicsContext context)
+        public PetPhotoModelsController(FunPetPicsContext context)
         {
             _context = context;
         }
 
-        // GET: UserModels
+        // GET: PetPhotoModels
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Users.ToListAsync());
+            return View(await _context.PetPhotos.ToListAsync());
         }
 
-        // GET: UserModels/Details/5
+        // GET: PetPhotoModels/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -30,39 +33,39 @@ namespace FunPetPics.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.Users
+            var petPhotoModel = await _context.PetPhotos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userModel == null)
+            if (petPhotoModel == null)
             {
                 return NotFound();
             }
 
-            return View(userModel);
+            return View(petPhotoModel);
         }
 
-        // GET: UserModels/Create
+        // GET: PetPhotoModels/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: UserModels/Create
+        // POST: PetPhotoModels/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Email,Password,DisplayName")] UserModel userModel)
+        public async Task<IActionResult> Create([Bind("Id,PetName,Title,Description,ImageName,DateUploaded,AverageCutenessRating,AverageFunnynessRating,AverageAwsomnessRating")] PetPhotoModel petPhotoModel)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userModel);
+                _context.Add(petPhotoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(userModel);
+            return View(petPhotoModel);
         }
 
-        // GET: UserModels/Edit/5
+        // GET: PetPhotoModels/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -70,22 +73,22 @@ namespace FunPetPics.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.Users.FindAsync(id);
-            if (userModel == null)
+            var petPhotoModel = await _context.PetPhotos.FindAsync(id);
+            if (petPhotoModel == null)
             {
                 return NotFound();
             }
-            return View(userModel);
+            return View(petPhotoModel);
         }
 
-        // POST: UserModels/Edit/5
+        // POST: PetPhotoModels/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Password,DisplayName")] UserModel userModel)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,PetName,Title,Description,ImageName,DateUploaded,AverageCutenessRating,AverageFunnynessRating,AverageAwsomnessRating")] PetPhotoModel petPhotoModel)
         {
-            if (id != userModel.Id)
+            if (id != petPhotoModel.Id)
             {
                 return NotFound();
             }
@@ -94,12 +97,12 @@ namespace FunPetPics.Controllers
             {
                 try
                 {
-                    _context.Update(userModel);
+                    _context.Update(petPhotoModel);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserModelExists(userModel.Id))
+                    if (!PetPhotoModelExists(petPhotoModel.Id))
                     {
                         return NotFound();
                     }
@@ -110,10 +113,10 @@ namespace FunPetPics.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userModel);
+            return View(petPhotoModel);
         }
 
-        // GET: UserModels/Delete/5
+        // GET: PetPhotoModels/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -121,30 +124,30 @@ namespace FunPetPics.Controllers
                 return NotFound();
             }
 
-            var userModel = await _context.Users
+            var petPhotoModel = await _context.PetPhotos
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userModel == null)
+            if (petPhotoModel == null)
             {
                 return NotFound();
             }
 
-            return View(userModel);
+            return View(petPhotoModel);
         }
 
-        // POST: UserModels/Delete/5
+        // POST: PetPhotoModels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userModel = await _context.Users.FindAsync(id);
-            _context.Users.Remove(userModel);
+            var petPhotoModel = await _context.PetPhotos.FindAsync(id);
+            _context.PetPhotos.Remove(petPhotoModel);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserModelExists(int id)
+        private bool PetPhotoModelExists(int id)
         {
-            return _context.Users.Any(e => e.Id == id);
+            return _context.PetPhotos.Any(e => e.Id == id);
         }
     }
 }

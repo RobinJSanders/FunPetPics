@@ -1,0 +1,83 @@
+﻿@model IEnumerable<FunPetPics.Models.PetPhotoModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<p>
+    <a asp-action="UploadPhoto">Upload Photo</a>
+</p>
+@if (Model != null || Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PetName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Description)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ImageName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DateUploaded)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AverageCutenessRating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AverageFunnynessRating)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AverageAwsomnessRating)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PetName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        <img src="@("~/UploadedPhotos/"+  item.ImageName)" asp-append-version="true" width="250px" height="250px" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateUploaded)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AverageCutenessRating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AverageFunnynessRating)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AverageAwsomnessRating)
+                    </td>
+                    <td>
+                        @*<a asp-action="Edit" asp-route-id="modelItem.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="modelItem.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="modelItem.Id">Delete</a>*@
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Your uploads will be displayed here</p>
+}

@@ -4,14 +4,16 @@ using FunPetPics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FunPetPics.Migrations
 {
     [DbContext(typeof(FunPetPicsContext))]
-    partial class FunPetPicsContextModelSnapshot : ModelSnapshot
+    [Migration("20210125115808_UpdatePetPhotoModel1")]
+    partial class UpdatePetPhotoModel1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,13 +28,13 @@ namespace FunPetPics.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<double>("AverageAwsomnessRating")
+                    b.Property<double?>("AverageAwsomnessRating")
                         .HasColumnType("float");
 
-                    b.Property<double>("AverageCutenessRating")
+                    b.Property<double?>("AverageCutenessRating")
                         .HasColumnType("float");
 
-                    b.Property<double>("AverageFunnynessRating")
+                    b.Property<double?>("AverageFunnynessRating")
                         .HasColumnType("float");
 
                     b.Property<DateTime>("DateUploaded")

@@ -14,15 +14,14 @@ using System.Threading.Tasks;
 namespace FunPetPics.Controllers
 {
     [Route("Account")]
-    public class AccountController : Controller
+    public class AccountController : ControllerBase
     {
-        private readonly FunPetPicsContext _context;
         private readonly IConfiguration _configuration;
+
         private readonly ILogger _logger;
 
-        public AccountController(FunPetPicsContext context, IConfiguration configuration, ILogger<AccountController> logger)
+        public AccountController(FunPetPicsContext context, IConfiguration configuration, ILogger<AccountController> logger) : base(context)
         {
-            _context = context;
             _configuration = configuration;
             _logger = logger;
         }
@@ -35,6 +34,7 @@ namespace FunPetPics.Controllers
 
         [Route("Login")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Login(string email, string password)
         {
             var user = _context.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
@@ -42,6 +42,7 @@ namespace FunPetPics.Controllers
             if (user != null && user.Password == password)
             {
                 HttpContext.Session.SetString("username", user.DisplayName);
+                HttpContext.Session.SetInt32("Id", user.Id);
                 return View("Success");
             }
             else

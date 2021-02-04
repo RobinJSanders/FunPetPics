@@ -18,7 +18,9 @@ namespace FunPetPics.Models
         [Required]
         public string DisplayName { get; set; }
 
-        public virtual ICollection<PetPhotoModel> Uploads { get; set; }
+        public virtual ICollection<PetPhotoModel> Uploads
+        { get; set; }
+
         public virtual ICollection<RatingModel> Ratings { get; set; }
     }
 }
