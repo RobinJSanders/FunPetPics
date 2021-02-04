@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System;
+using System.Collections.Generic;
 
 namespace FunPetPics.Controllers
 {
@@ -20,15 +21,60 @@ namespace FunPetPics.Controllers
             _hostEnvironment = hostEnvironment;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder)
         {
+            //get the current logged in user and their collection of uploads from the database context
             var uploads = GetLoggedInUser().Uploads;
-            if (uploads != null)
+
+            if (uploads == null || !uploads.Any())
             {
-                var listUploads = uploads.ToList();
-                return View(uploads);
+                return View();
             }
-            else return View();
+
+            var model = uploads.ToList();
+
+            switch (sortOrder)
+            {
+                case "Newest":
+                    model = model.OrderByDescending(u => u.DateUploaded).ToList();
+                    break;
+
+                case "Oldest":
+                    model = model.OrderBy(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Cutest":
+                    model = model.OrderByDescending(u => u.AverageCutenessRating)
+                        .ThenByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Funniest":
+                    model = model.OrderByDescending(u => u.AverageFunnynessRating)
+                        .ThenByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Most Awsome":
+                    model = model.OrderByDescending(u => u.AverageAwsomnessRating)
+                         .ThenByDescending(u => u.DateUploaded)
+                         .ToList();
+                    break;
+
+                default:
+                    sortOrder = "Newest";
+                    model = model.OrderByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+            }
+
+            ViewBag.SortOrder = new List<string>
+            {
+                "Newest", "Oldest", "Cutest", "Funniest", "Most Awsome"
+            };
+
+            return View(model);
         }
 
         public IActionResult UploadPhoto()

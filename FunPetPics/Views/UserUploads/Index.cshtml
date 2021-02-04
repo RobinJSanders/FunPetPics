@@ -7,77 +7,59 @@
 <p>
     <a asp-action="UploadPhoto">Upload Photo</a>
 </p>
-@if (Model != null || Model.Any())
+@if (Model == null || !Model.Any())
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.PetName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ImageName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateUploaded)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AverageCutenessRating)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AverageFunnynessRating)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.AverageAwsomnessRating)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PetName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Title)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Description)
-                    </td>
-                    <td>
-                        <img src="@("~/UploadedPhotos/"+  item.ImageName)" asp-append-version="true" width="250px" height="250px" />
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.DateUploaded)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AverageCutenessRating)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AverageFunnynessRating)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AverageAwsomnessRating)
-                    </td>
-                    <td>
-                        @*<a asp-action="Edit" asp-route-id="modelItem.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="modelItem.Id">Details</a> |
-                            <a asp-action="Delete" asp-route-id="modelItem.Id">Delete</a>*@
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <p>Your uploads will be displayed here</p>
+
 }
 else
 {
-    <p>Your uploads will be displayed here</p>
+
+    @using (Html.BeginForm("Index", "UserUploads", FormMethod.Get))
+    {
+        <h6>Order by:</h6>
+        @Html.DropDownList("sortOrder", new SelectList(ViewBag.SortOrder))
+        <input type="submit" value="search" />
+
+    }
+
+    @*<div class="row">
+            <div class="col-md-4">
+                <h6>Order by:</h6>
+                <div class="form-group">
+                    <input type=text list=sortOrder class="list">
+                    <datalist id=sortOrder>
+                        <option>@Html.ActionLink("Newest", "Index", new { sortOrder = "Newest" })</option>
+                        <option>@Html.ActionLink("Oldest", "Index", new { sortOrder = "Oldest" })</option>
+                        <option>@Html.ActionLink("Cutest", "Index", new { sortOrder = "Cutest" })</option>
+                        <option>@Html.ActionLink("Funiest", "Index", new { sortOrder = "Funiest" })</option>
+                        <option>@Html.ActionLink("Most Awsome", "Index", new { sortOrder = "Most Awsome" })</option>
+                    </datalist>
+                </div>
+            </div>
+        </div>
+        <br />*@
+
+    <div class="card-columns">
+
+        @foreach (var upload in Model)
+        {
+            <div class="card">
+                <img class="card-img-top" src="@("~/UploadedPhotos/"+  upload.ImageName)" asp-append-version="true">
+                <div class="card-body">
+                    <h4 class="card-title">@upload.Title</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
+                    <p class="card-text">@upload.DateUploaded</p>
+                    <p class="card-text">@upload.Description</p>
+                    <p class="card-subtitle">Ratings:</p>
+                    <p class="card-text">
+                        Cute:@upload.AverageCutenessRating/5<br />
+                        Funny:@upload.AverageFunnynessRating/5<br />
+                        Awsome:@upload.AverageAwsomnessRating/5<br />
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+
 }
