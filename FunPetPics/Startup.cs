@@ -1,4 +1,6 @@
 using FunPetPics.Data;
+using FunPetPics.Services;
+using FunPetPics.Services.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ namespace FunPetPics
 
             services.AddMvc();
             services.AddSession();
+            services.AddScoped<IFilterService, FilterService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

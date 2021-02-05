@@ -1,22 +1,39 @@
-﻿using FunPetPics.Models;
+﻿using FunPetPics.Data;
+using FunPetPics.Models;
+using FunPetPics.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace FunPetPics.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : ControllerBase
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IFilterService _filterService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(FunPetPicsContext context, ILogger<HomeController> logger, IFilterService filterService) : base(context)
         {
             _logger = logger;
+            _filterService = filterService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string sortOrder)
         {
-            return View();
+            var uploads = _context.PetPhotos;
+
+            if (uploads == null || !uploads.Any())
+            {
+                return View();
+            }
+
+            var model = uploads.ToList();
+
+            _filterService.SetupFilters(ref model, sortOrder, this);
+
+            return View(model);
         }
 
         public IActionResult Login()

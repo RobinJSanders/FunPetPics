@@ -17,28 +17,8 @@ else
 
     @using (Html.BeginForm("Index", "UserUploads", FormMethod.Get))
     {
-        <h6>Order by:</h6>
-        @Html.DropDownList("sortOrder", new SelectList(ViewBag.SortOrder))
-        <input type="submit" value="search" />
-
+        @await Html.PartialAsync("_PetPhotoModelFilter")
     }
-
-    @*<div class="row">
-            <div class="col-md-4">
-                <h6>Order by:</h6>
-                <div class="form-group">
-                    <input type=text list=sortOrder class="list">
-                    <datalist id=sortOrder>
-                        <option>@Html.ActionLink("Newest", "Index", new { sortOrder = "Newest" })</option>
-                        <option>@Html.ActionLink("Oldest", "Index", new { sortOrder = "Oldest" })</option>
-                        <option>@Html.ActionLink("Cutest", "Index", new { sortOrder = "Cutest" })</option>
-                        <option>@Html.ActionLink("Funiest", "Index", new { sortOrder = "Funiest" })</option>
-                        <option>@Html.ActionLink("Most Awsome", "Index", new { sortOrder = "Most Awsome" })</option>
-                    </datalist>
-                </div>
-            </div>
-        </div>
-        <br />*@
 
     <div class="card-columns">
 

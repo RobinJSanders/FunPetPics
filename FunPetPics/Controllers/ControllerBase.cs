@@ -63,5 +63,49 @@ namespace FunPetPics.Controllers
             collection.Add(model);
             return collection;
         }
+
+        protected void SetupFilters(ref List<PetPhotoModel> model, string sortOrder)
+        {
+            ViewBag.SortOrder = new List<string>
+            {
+                "Newest", "Oldest", "Cutest", "Funniest", "Most Awsome"
+            };
+
+            switch (sortOrder)
+            {
+                case "Newest":
+                    model = model.OrderByDescending(u => u.DateUploaded).ToList();
+                    break;
+
+                case "Oldest":
+                    model = model.OrderBy(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Cutest":
+                    model = model.OrderByDescending(u => u.AverageCutenessRating)
+                        .ThenByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Funniest":
+                    model = model.OrderByDescending(u => u.AverageFunnynessRating)
+                        .ThenByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+
+                case "Most Awsome":
+                    model = model.OrderByDescending(u => u.AverageAwsomnessRating)
+                         .ThenByDescending(u => u.DateUploaded)
+                         .ToList();
+                    break;
+
+                default:
+                    sortOrder = "Newest";
+                    model = model.OrderByDescending(u => u.DateUploaded)
+                        .ToList();
+                    break;
+            }
+        }
     }
 }

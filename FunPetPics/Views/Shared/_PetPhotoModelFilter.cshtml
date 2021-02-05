@@ -1,0 +1,9 @@
+﻿@model IEnumerable<FunPetPics.Models.PetPhotoModel>
+
+@{
+    Layout = null;
+}
+
+<h6>Order by:</h6>
+@Html.DropDownList("sortOrder", new SelectList(ViewBag.SortOrder))
+<input type="submit" value="search" />

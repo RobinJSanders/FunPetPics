@@ -9,16 +9,19 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using System;
 using System.Collections.Generic;
+using FunPetPics.Services.Interfaces;
 
 namespace FunPetPics.Controllers
 {
     public class UserUploadsController : ControllerBase
     {
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IFilterService _filterService;
 
-        public UserUploadsController(FunPetPicsContext context, IWebHostEnvironment hostEnvironment) : base(context)
+        public UserUploadsController(FunPetPicsContext context, IWebHostEnvironment hostEnvironment, IFilterService filterService) : base(context)
         {
             _hostEnvironment = hostEnvironment;
+            _filterService = filterService;
         }
 
         public IActionResult Index(string sortOrder)
@@ -33,46 +36,7 @@ namespace FunPetPics.Controllers
 
             var model = uploads.ToList();
 
-            switch (sortOrder)
-            {
-                case "Newest":
-                    model = model.OrderByDescending(u => u.DateUploaded).ToList();
-                    break;
-
-                case "Oldest":
-                    model = model.OrderBy(u => u.DateUploaded)
-                        .ToList();
-                    break;
-
-                case "Cutest":
-                    model = model.OrderByDescending(u => u.AverageCutenessRating)
-                        .ThenByDescending(u => u.DateUploaded)
-                        .ToList();
-                    break;
-
-                case "Funniest":
-                    model = model.OrderByDescending(u => u.AverageFunnynessRating)
-                        .ThenByDescending(u => u.DateUploaded)
-                        .ToList();
-                    break;
-
-                case "Most Awsome":
-                    model = model.OrderByDescending(u => u.AverageAwsomnessRating)
-                         .ThenByDescending(u => u.DateUploaded)
-                         .ToList();
-                    break;
-
-                default:
-                    sortOrder = "Newest";
-                    model = model.OrderByDescending(u => u.DateUploaded)
-                        .ToList();
-                    break;
-            }
-
-            ViewBag.SortOrder = new List<string>
-            {
-                "Newest", "Oldest", "Cutest", "Funniest", "Most Awsome"
-            };
+            _filterService.SetupFilters(ref model, sortOrder, this);
 
             return View(model);
         }
