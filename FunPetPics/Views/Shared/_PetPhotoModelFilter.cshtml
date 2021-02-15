@@ -4,6 +4,12 @@
     Layout = null;
 }
 
-<h6>Order by:</h6>
-@Html.DropDownList("sortOrder", new SelectList(ViewBag.SortOrder))
-<input type="submit" value="search" />
+<div class="filter">
+    <form>
+        <h6>Order by:</h6>
+        @Html.DropDownList("sortOrder", new SelectList(ViewBag.SortOrder))
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
+<br />

@@ -6,7 +6,7 @@
 
 @if (Model == null || !Model.Any())
 {
-    <p>Your uploads will be displayed here</p>
+    <p>uploads will be displayed here</p>
 
 }
 else
@@ -15,27 +15,32 @@ else
     @using (Html.BeginForm("Index", "Home", FormMethod.Get))
     {
         @await Html.PartialAsync("_PetPhotoModelFilter")
+
     }
 
-    <div class="card-columns">
+    <div class="row">
 
         @foreach (var upload in Model)
         {
-            <div class="card">
-                <img class="card-img-top" src="@("~/UploadedPhotos/"+  upload.ImageName)" asp-append-version="true">
-                <div class="card-body">
-                    <h4 class="card-title">@upload.Title</h4>
-                    <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
-                    <p class="card-text">@upload.DateUploaded</p>
-                    <p class="card-text">@upload.Description</p>
-                    <p class="card-subtitle">Ratings:</p>
-                    <p class="card-text">
-                        Cute:@upload.AverageCutenessRating/5<br />
-                        Funny:@upload.AverageFunnynessRating/5<br />
-                        Awsome:@upload.AverageAwsomnessRating/5<br />
-                    </p>
+            <div class="col-lg-6">
+                <div class="card-hover" style="height: 800px">
+                    <img class="card-img-top" src="@("~/UploadedPhotos/"+  upload.ImageName)" asp-append-version="true">
+                    <div class="card-body">
+                        <h4 class="card-title" color="#000">@upload.Title</h4>
+                        <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
+                        <p class="card-text">@upload.DateUploaded</p>
+                        <p class="card-text">@upload.Description</p>
+                        <p class="card-subtitle">Ratings:</p>
+                        <p class="card-text">
+                            Cute:@upload.AverageCutenessRating/5<br />
+                            Funny:@upload.AverageFunnynessRating/5<br />
+                            Awsome:@upload.AverageAwsomnessRating/5<br />
+                        </p>
+                        <a class="stretched-link" href='@Url.Action( "Rate", "Details", new { id=upload.Id } )' class="card-link"></a>
+                    </div>
                 </div>
             </div>
+
         }
     </div>
 

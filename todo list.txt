@@ -1,0 +1,7 @@
+-Allow users to view their rating (WIP)
+-Encrypt Passwords
+-Allow user to Rate photos or edit existing ratings
+-Display Ratings in stars
+-Dissalow users to rate their own photos
+-Add comment section when rating
+-change _layout so that the login is displayed on the right
