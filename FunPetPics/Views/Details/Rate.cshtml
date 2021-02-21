@@ -1,70 +1,80 @@
 ﻿@using Microsoft.AspNetCore.Http;
 
-@model Tuple<PetPhotoModel, UserModel>
+@model RatingModel
 
 @{
-    var upload = this.Model.Item1 as PetPhotoModel;
-    var currentUser = this.Model.Item2 as UserModel;
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="card">
-                <img class="card-img-top" src="@("~/UploadedPhotos/" + upload.ImageName)" asp-append-version="true">
-                <div class="card-body">
-                    <h4 class="card-title" color="#000">@upload.Title</h4>
-                    <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
-                    <p class="card-text">@upload.DateUploaded</p>
-                    <p class="card-text">@upload.Description</p>
-                    <p class="card-subtitle">Ratings:</p>
-                    <p class="card-text">
-                        <table>
-                            <tr>
-                                <th></th>
-                                <th>Average Rating</th>
-                                <th>Your Rating</th>
-                            </tr>
-                            <tr>
-                                <td>Cute</td>
-                                <td>@upload.AverageCutenessRating/5</td>
-                                @{
-                                    if (currentUser == null)
-                                    {
-                                        <td>Please log in to add rating</td>
-                                    }
-                                    else
-                                    {
-                                        var cutenessRating = 0;
-                                        foreach (var ur in currentUser.Ratings)
-                                        {
-                                            foreach (var pr in upload.Ratings)
-                                            {
-                                                if (pr == ur && pr.CutenessRating != null)
-                                                {
-                                                    cutenessRating = (int)pr.CutenessRating;
-                                                }
-                                            }
+    var upload = this.Model.PetPhotoModel;
+    var currentUser = this.Model.User;
+}
 
-                                        }
-                                        <td>@cutenessRating/5</td>
-                                    }
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <img class="card-img-top" src="@("~/UploadedPhotos/" + upload.ImageName)" asp-append-version="true">
+            <div class="card-body">
+                <h4 class="card-title" color="#000">@upload.Title</h4>
+                <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
+                <p class="card-text">@upload.DateUploaded</p>
+                <p class="card-text">@upload.Description</p>
+                <p class="card-text">Uploaded by: @upload.UploadedBy</p>
+                <p class="card-subtitle">Ratings:</p>
+                <p class="card-text">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Average Rating</th>
+                            <th>Your Rating</th>
+                        </tr>
+                        <tr>
+                            <td>Cute</td>
+                            <td>@upload.AverageCutenessRating/5</td>
+                            @{
 
+                                if (currentUser == null)
+                                {
+                                    <td>Please Log in to rate</td>
                                 }
-                            </tr>
-                            <tr>
-                                <td>Funny</td>
-                                <td>@upload.AverageFunnynessRating/5</td>
-                                <td>0/5</td>
-                            </tr>
-                            <tr>
-                                <td>Awsome</td>
-                                <td>@upload.AverageAwsomnessRating/5</td>
-                                <td>0/5</td>
-                            </tr>
-                        </table>
-                    </p>
-                    <a class="stretched-link" href='@Url.Action( "Rate", "Details", new { id=upload.Id } )' class="card-link"></a>
-                </div>
+                                else
+                                {
+                                    var r = @Model.CutenessRating == null ? 0 : @Model.CutenessRating;
+                                    <td>@r/5</td>
+                                }
+
+                            }
+                        </tr>
+                        <tr>
+                            <td>Funny</td>
+                            <td>@upload.AverageFunnynessRating/5</td>
+                            @{
+                                if (currentUser == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    var r = @Model.FunynessRating == null ? 0 : @Model.FunynessRating;
+                                    <td>@r/5</td>
+                                }
+                            }
+                        </tr>
+                        <tr>
+                            <td>Awsome</td>
+                            <td>@upload.AverageAwsomnessRating/5</td>
+                            @{
+                                if (currentUser == null)
+                                {
+                                    <td></td>
+                                }
+                                else
+                                {
+                                    var r = @Model.FunynessRating == null ? 0 : @Model.FunynessRating;
+                                    <td>@r/5</td>
+                                }
+                            }
+                        </tr>
+                    </table>
+                </p>
             </div>
         </div>
     </div>
-
-}
+</div>

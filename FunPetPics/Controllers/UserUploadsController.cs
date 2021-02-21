@@ -70,6 +70,7 @@ namespace FunPetPics.Controllers
 
                 //GetLoggedInUser() gets the current user by id from the db context
                 var user = GetLoggedInUser();
+                petPhotoModel.UploadedBy = user.DisplayName;
                 SetDefaultsAndAdd(user.Uploads, petPhotoModel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

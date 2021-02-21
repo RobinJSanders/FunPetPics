@@ -19,6 +19,8 @@ namespace FunPetPics.Models
 
         public string Description { get; set; }
 
+        public string UploadedBy { get; set; }
+
         [Column(TypeName = "nvarchar(100)")]
         [DisplayName("Image Name")]
         public string ImageName { get; set; }

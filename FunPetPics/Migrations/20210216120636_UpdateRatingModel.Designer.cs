@@ -4,14 +4,16 @@ using FunPetPics.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FunPetPics.Migrations
 {
     [DbContext(typeof(FunPetPicsContext))]
-    partial class FunPetPicsContextModelSnapshot : ModelSnapshot
+    [Migration("20210216120636_UpdateRatingModel")]
+    partial class UpdateRatingModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,9 +52,6 @@ namespace FunPetPics.Migrations
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UploadedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("UserModelId")

@@ -24,7 +24,10 @@ namespace FunPetPics.Controllers
         protected UserModel GetLoggedInUser()
         {
             var userId = HttpContext.Session.GetInt32("Id");
-            return _context.Users
+
+            return userId == null ? null :
+
+            _context.Users
                 .Include(e => e.Uploads)
                 .Include(e => e.Ratings)
                 .FirstOrDefault(u => u.Id == userId);

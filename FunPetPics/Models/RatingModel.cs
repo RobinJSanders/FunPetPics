@@ -4,11 +4,9 @@
     {
         public int Id { get; set; }
 
-        //[Required]
-        //public int UserId { get; set; }
+        public UserModel User { get; set; }
+        public PetPhotoModel PetPhotoModel { get; set; }
 
-        //[Required]
-        //public int PetPhotoId { get; set; }
         public int? CutenessRating { get; set; }
 
         public int? FunynessRating { get; set; }

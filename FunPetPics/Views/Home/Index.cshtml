@@ -1,4 +1,6 @@
-﻿@model IEnumerable<FunPetPics.Models.PetPhotoModel>
+﻿@using Microsoft.AspNetCore.Http;
+
+@model IEnumerable<FunPetPics.Models.PetPhotoModel>
 
 @{
     ViewData["Title"] = "Home Page";
@@ -30,13 +32,14 @@ else
                         <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
                         <p class="card-text">@upload.DateUploaded</p>
                         <p class="card-text">@upload.Description</p>
+                        <p class="card-text">Uploaded by: @upload.UploadedBy</p>
                         <p class="card-subtitle">Ratings:</p>
                         <p class="card-text">
                             Cute:@upload.AverageCutenessRating/5<br />
                             Funny:@upload.AverageFunnynessRating/5<br />
                             Awsome:@upload.AverageAwsomnessRating/5<br />
                         </p>
-                        <a class="stretched-link" href='@Url.Action( "Rate", "Details", new { id=upload.Id } )' class="card-link"></a>
+                        <a class="stretched-link" href='@Url.Action( "Rate", "Details", new { id=upload.Id } )'></a>
                     </div>
                 </div>
             </div>
