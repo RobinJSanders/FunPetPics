@@ -1,7 +1,11 @@
--Allow users to view their rating (WIP)
--Encrypt Passwords
--Allow user to Rate photos or edit existing ratings
--Display Ratings in stars
+High Priority:
+-change _layout so that the login and myUploads is displayed on the right
 -Dissalow users to rate their own photos
+-Edit for uploads
+-Fucntionality for  Change Password
+-preview photo on uploads
+
+Medium Priority:
 -Add comment section when rating
--change _layout so that the login is displayed on the right
+-Make it look prety
+-Profile Pic

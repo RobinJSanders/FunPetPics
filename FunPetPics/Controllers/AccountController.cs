@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -39,17 +42,27 @@ namespace FunPetPics.Controllers
         {
             var user = _context.Users.FirstOrDefault(u => u.Email.ToLower() == email.ToLower());
 
-            if (user != null && user.Password == password)
-            {
-                HttpContext.Session.SetString("username", user.DisplayName);
-                HttpContext.Session.SetInt32("Id", user.Id);
-                return View("Success");
-            }
-            else
+            if (user == null)
             {
                 ViewBag.error = "An acount with this email address does not exist please try again or create an account with the link below";
                 return View("Index");
             }
+
+            //encrypt if not already encrypted
+            if (user.Password == password)
+            {
+                user.Password = Encrypt(user.Password);
+                _context.SaveChanges();
+            }
+            if (user.Password != Encrypt(password))
+            {
+                ViewBag.error = "Invalid Password";
+                return View("Index");
+            }
+
+            HttpContext.Session.SetString("username", user.DisplayName);
+            HttpContext.Session.SetInt32("Id", user.Id);
+            return View("Success");
         }
 
         [Route("Logout")]
@@ -68,6 +81,7 @@ namespace FunPetPics.Controllers
 
         [Route("ConfirmCreateAccount")]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> ConfirmCreateAccount(string email, string displayName, string password, string confirmPassword)
         {
             if (!ReCaptchaPassed(
@@ -104,12 +118,28 @@ namespace FunPetPics.Controllers
             {
                 Email = email,
                 DisplayName = displayName,
-                Password = password,
+                Password = Encrypt(password),
             };
             _context.Add(user);
             await _context.SaveChangesAsync();
             HttpContext.Session.SetString("username", user.DisplayName);
             return View("Success");
+        }
+
+        private string Encrypt(string password)
+        {
+            // byte array representation of that string
+            byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+
+            // need MD5 to calculate the hash
+            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+
+            // string representation (similar to UNIX format)
+            string encoded = BitConverter.ToString(hash)
+               .Replace("-", string.Empty)
+               // make lowercase
+               .ToLower();
+            return encoded;
         }
 
         [Route("ManageAccount")]
