@@ -1,5 +1,6 @@
 ﻿using FunPetPics.Data;
 using FunPetPics.Models;
+using FunPetPics.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,50 +24,65 @@ namespace FunPetPics.Controllers
             var petPhotoModel = _context.PetPhotos.FirstOrDefault(p => p.Id == id);
 
             if (userModel == null)
-                return View(new RatingModel { PetPhotoModel = petPhotoModel });
+                return View(new UserRatingViewModel { PetPhotoModel = petPhotoModel });
 
-            var model = _context.Ratings.FirstOrDefault(m =>
-              m.User == userModel &&
-              m.PetPhotoModel.Id == id);
+            var ratingModel = _context.Ratings.FirstOrDefault(m =>
+              m.UserModelId == userModel.Id &&
+              m.PetPhotoModelId == petPhotoModel.Id);
 
-            if (model == null)
+            if (ratingModel == null)
             {
-                model = new RatingModel { PetPhotoModel = petPhotoModel, User = userModel };
+                ratingModel = new RatingModel { PetPhotoModelId = petPhotoModel.Id, UserModelId = userModel.Id };
             }
 
             if (userModel.Uploads.FirstOrDefault(u => u == petPhotoModel) != null)
                 return RedirectToAction("Edit", "Details", new { id = id });
 
-            return View(model);
+            ratingModel.PetPhotoModelId = petPhotoModel.Id;
+            ratingModel.UserModelId = userModel.Id;
+
+            return View(new UserRatingViewModel { PetPhotoModel = petPhotoModel, RatingModel = ratingModel, UserModel = userModel });
         }
 
         [HttpPost]
         [Route("Details/Rate/{id}")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Rate(int id, RatingModel model)
+        public async Task<IActionResult> Rate(UserRatingViewModel model)
         {
-            var petPhotoModel = _context.PetPhotos.Include(e => e.Ratings)
-                .FirstOrDefault(e => e.Id == model.Id);
+            var petPhotoModel = await _context.PetPhotos.FirstOrDefaultAsync(m => m.Id == model.PetPhotoModel.Id);
 
-            var ratingModels = petPhotoModel.Ratings;
+            model.RatingModel.PetPhotoModelId = model.PetPhotoModel.Id;
+            model.RatingModel.UserModelId = model.UserModel.Id;
 
-            var existingRating = ratingModels.FirstOrDefault(r => r.Id == model.Id);
+            var ratingModels = _context.Ratings.Where(u => u.PetPhotoModelId == petPhotoModel.Id).ToList();
+
+            var existingRating = await _context.Ratings.FirstOrDefaultAsync(m => m.UserModelId == model.UserModel.Id);
 
             if (existingRating != null)
             {
-                existingRating = model;
-
+                int existingIndex = 0;
+                for (int i = 0; i < ratingModels.Count; i++)
+                {
+                    if (ratingModels[i].Id == existingRating.Id)
+                    {
+                        existingIndex = i;
+                        break;
+                    }
+                }
+                ratingModels[existingIndex] = model.RatingModel;
+                _context.Entry(existingRating).CurrentValues.SetValues(model.RatingModel);
                 CalculateAverageRatings(ratingModels, petPhotoModel);
             }
             else
             {
-                ratingModels.Add(model);
+                ratingModels.Add(model.RatingModel);
+                _context.Ratings.Add(model.RatingModel);
                 CalculateAverageRatings(ratingModels, petPhotoModel);
             }
 
             await _context.SaveChangesAsync();
 
-            return View(model.PetPhotoModel.Id);
+            return RedirectToAction("Rate", "Details", new { id = model.PetPhotoModel.Id });
         }
 
         private void CalculateAverageRatings(ICollection<RatingModel> ratingModels, PetPhotoModel petPhotoModel)
@@ -83,9 +99,12 @@ namespace FunPetPics.Controllers
                     .Where(d => d != null).ToList(),
                 };
 
-            petPhotoModel.AverageAwsomnessRating = Math.Round((double)ratingsTable[0].Average(), 1);
-            petPhotoModel.AverageCutenessRating = Math.Round((double)ratingsTable[1].Average(), 1);
-            petPhotoModel.AverageFunnynessRating = Math.Round((double)ratingsTable[2].Average(), 1);
+            if (ratingsTable[0].Any())
+                petPhotoModel.AverageAwsomnessRating = Math.Round((double)ratingsTable[0].Average(), 1);
+            if (ratingsTable[1].Any())
+                petPhotoModel.AverageCutenessRating = Math.Round((double)ratingsTable[1].Average(), 1);
+            if (ratingsTable[2].Any())
+                petPhotoModel.AverageFunnynessRating = Math.Round((double)ratingsTable[2].Average(), 1);
         }
 
         [HttpGet]

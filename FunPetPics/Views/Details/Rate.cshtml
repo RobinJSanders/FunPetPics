@@ -1,17 +1,24 @@
 ﻿@using Microsoft.AspNetCore.Http;
+@using FunPetPics.ViewModels;
 
-@model RatingModel
+@model UserRatingViewModel
 
 @{
     var upload = this.Model.PetPhotoModel;
-    var currentUser = this.Model.User;
+    var currentUser = this.Model.UserModel;
 
     var selectList = new SelectList(new string[] { "-", "1", "2", "3", "4", "5" });
 }
 <form asp-action="Rate">
-    <input type="hidden" value="@Model.Id" name="Id" />
-    <input type="hidden" value="@Model.User" name="User" />
-    <input type="hidden" value="@Model.PetPhotoModel" name="PetPhotoModel" />
+    @if (Model.RatingModel != null)
+    {
+        <input type="hidden" value="@Model.RatingModel.Id" name="RatingModel.Id" />
+    }
+    <input type="hidden" value="@Model.PetPhotoModel.Id" name="PetPhotoModel.Id" />
+    @if (Model.UserModel != null)
+    {
+        <input type="hidden" value="@Model.UserModel.Id" name="UserModel.Id" />
+    }
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="row">
         <div class="col-lg-12">
@@ -43,8 +50,8 @@
                                     else
                                     {
                                         <td>
-                                            @Html.DropDownList("CutenessRating", selectList)
-                                            <span asp-validation-for="CutenessRating" class="text-danger"></span>
+                                            @Html.DropDownList("RatingModel.CutenessRating", selectList)
+                                            <span asp-validation-for="RatingModel.CutenessRating" class="text-danger"></span>
                                         </td>
                                     }
 
@@ -61,8 +68,8 @@
                                     else
                                     {
                                         <td>
-                                            @Html.DropDownList("FunynessRating", selectList)
-                                            <span asp-validation-for="FunynessRating" class="text-danger"></span>
+                                            @Html.DropDownList("RatingModel.FunynessRating", selectList)
+                                            <span asp-validation-for="RatingModel.FunynessRating" class="text-danger"></span>
                                         </td>
                                     }
                                 }
@@ -78,8 +85,8 @@
                                     else
                                     {
                                         <td>
-                                            @Html.DropDownList("AwsomenessRating", selectList)
-                                            <span asp-validation-for="AwsomenessRating" class="text-danger"></span>
+                                            @Html.DropDownList("RatingModel.AwsomenessRating", selectList)
+                                            <span asp-validation-for="RatingModel.AwsomenessRating" class="text-danger"></span>
                                         </td>
                                     }
                                 }

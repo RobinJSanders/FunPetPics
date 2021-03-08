@@ -4,8 +4,9 @@
     {
         public int Id { get; set; }
 
-        public UserModel User { get; set; }
-        public PetPhotoModel PetPhotoModel { get; set; }
+        public int? UserModelId { get; set; }
+
+        public int? PetPhotoModelId { get; set; }
 
         public int? CutenessRating { get; set; }
 
