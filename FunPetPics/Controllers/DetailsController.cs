@@ -1,6 +1,7 @@
 ﻿using FunPetPics.Data;
 using FunPetPics.Models;
 using FunPetPics.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -36,7 +37,7 @@ namespace FunPetPics.Controllers
             }
 
             if (userModel.Uploads.FirstOrDefault(u => u == petPhotoModel) != null)
-                return RedirectToAction("Edit", "Details", new { id = id });
+                return RedirectToAction("ViewDetails", "Details", new { id = id });
 
             ratingModel.PetPhotoModelId = petPhotoModel.Id;
             ratingModel.UserModelId = userModel.Id;
@@ -108,13 +109,67 @@ namespace FunPetPics.Controllers
         }
 
         [HttpGet]
-        [Route("Details/Edit/{id}")]
-        public IActionResult Edit(int id)
+        [Route("Details/ViewDetails/{id}")]
+        public IActionResult ViewDetails(int id)
         {
             var model = _context.PetPhotos.FirstOrDefault(p => p.Id == id);
-            if (GetLoggedInUser().Uploads.FirstOrDefault(u => u == model) == null)
-                return RedirectToAction("Index", "Home");
             return View(model);
+        }
+
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var petPhotoModel = await _context.PetPhotos.FindAsync(id);
+            if (HttpContext.Session.GetInt32("Id") != petPhotoModel.UserModelId)
+                return RedirectToAction("ViewDetails", "Details", new { id = id });
+            if (petPhotoModel == null)
+            {
+                return NotFound();
+            }
+            return View(petPhotoModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, PetPhotoModel petPhotoModel)
+        {
+            var dbPetPhotoModel = await _context.PetPhotos.FirstOrDefaultAsync(m => m.Id == id);
+            if (id != dbPetPhotoModel.Id)
+            {
+                return NotFound();
+            }
+            dbPetPhotoModel.PetName = petPhotoModel.PetName;
+            dbPetPhotoModel.Title = petPhotoModel.Title;
+            dbPetPhotoModel.Description = petPhotoModel.Description;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(dbPetPhotoModel);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!PetPhotoModelExists(dbPetPhotoModel.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+            return RedirectToAction("ViewDetails", "Details", new { id = id });
+        }
+
+        private bool PetPhotoModelExists(int id)
+        {
+            return _context.PetPhotos.Any(e => e.Id == id);
         }
     }
 }

@@ -11,6 +11,8 @@ namespace FunPetPics.Models
     {
         public int Id { get; set; }
 
+        public int UserModelId { get; set; }
+
         [Required]
         public string PetName { get; set; }
 

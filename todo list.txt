@@ -6,6 +6,7 @@ High Priority:
 -preview photo on uploads
 
 Medium Priority:
+-website logo
 -Add comment section when rating
 -Make it look prety
 -Profile Pic

@@ -1,5 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http;
-
+@{
+    ViewData["Title"] = "Edit";
+}
 @model PetPhotoModel
 
 @{
@@ -8,19 +10,40 @@
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
-            <img class="card-img-top" src="@("~/UploadedPhotos/" + upload.ImageName)" asp-append-version="true">
-            <div class="card-body">
-                <h4 class="card-title">@upload.Title</h4>
-                <h6 class="card-subtitle mb-2 text-muted">@upload.PetName</h6>
-                <p class="card-text">@upload.DateUploaded</p>
-                <p class="card-text">@upload.Description</p>
-                <p class="card-subtitle">Ratings:</p>
-                <p class="card-text">
-                    Cute:@upload.AverageCutenessRating/5<br />
-                    Funny:@upload.AverageFunnynessRating/5<br />
-                    Awsome:@upload.AverageAwsomnessRating/5<br />
-                </p>
-            </div>
+            <form asp-action="Edit">
+                <img class="card-img-top" src="@("~/UploadedPhotos/" + upload.ImageName)" asp-append-version="true">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label asp-for="PetName" class="control-label"></label>
+                        <input asp-for="PetName" class="form-control" />
+                        <span asp-validation-for="PetName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                    <p class="card-text">@upload.DateUploaded</p>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <p class="card-subtitle">Ratings:</p>
+                    <p class="card-text">
+                        Cute:@upload.AverageCutenessRating/5<br />
+                        Funny:@upload.AverageFunnynessRating/5<br />
+                        Awsome:@upload.AverageAwsomnessRating/5<br />
+                    </p>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
